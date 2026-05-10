@@ -81,8 +81,8 @@ public class AdminController {
     @PutMapping("/route-stops/{id}/actual-time")
     public ResponseEntity<Void> updateActualTime(
             @PathVariable Long id,
-            @RequestParam LocalTime actualTime) {
-        adminService.updateActualTime(id, actualTime);
+            @RequestParam String actualTime) {
+        adminService.updateActualTime(id, LocalTime.parse(actualTime));
         return ResponseEntity.noContent().build();
     }
 

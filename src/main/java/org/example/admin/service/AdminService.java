@@ -126,8 +126,13 @@ public class AdminService {
             for (Schedule schedule : schedules) {
                 if (schedule.getDays().contains(today.getDayOfWeek())) {
                     List<Booking> affected = bookingRepository.findByScheduleAndTravelDate(schedule, today);
-                    affected.forEach(b ->
-                            emailService.sendDelayNotification(b, stop.getStation().getName(), delay));
+                    for (Booking b : affected) {
+                        try {
+                            emailService.sendDelayNotification(b, stop.getStation().getName(), delay);
+                        } catch (Exception e) {
+                            System.err.println("[AdminService] Delay email failed for " + b.getCustomerEmail() + ": " + e.getMessage());
+                        }
+                    }
                 }
             }
         }

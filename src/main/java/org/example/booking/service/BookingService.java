@@ -51,7 +51,11 @@ public class BookingService {
                 .build();
 
         Booking saved = bookingRepository.save(booking);
-        emailService.sendBookingConfirmation(saved);
+        try {
+            emailService.sendBookingConfirmation(saved);
+        } catch (Exception e) {
+            System.err.println("[BookingService] Email failed (booking still created): " + e.getMessage());
+        }
         return toDto(saved);
     }
 
